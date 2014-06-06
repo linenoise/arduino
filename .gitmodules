@@ -1,0 +1,12 @@
+[submodule "libraries/FastFader"]
+	path = libraries/FastFader
+	url = https://github.com/danndalf/FastFader.git
+[submodule "libraries/FastLED"]
+	path = libraries/FastLED
+	url = https://github.com/FastLED/FastLED.git
+[submodule "libraries/LPD8806"]
+	path = libraries/LPD8806
+	url = https://github.com/adafruit/LPD8806.git
+[submodule "libraries/TimerOne"]
+	path = libraries/TimerOne
+	url = https://github.com/PaulStoffregen/TimerOne.git
