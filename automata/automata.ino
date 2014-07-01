@@ -149,8 +149,8 @@ void loop() {
     }
 
     // Blue dominant (shimmer)
-    automata[i][2] = automata[i][2] * 2;
-    automata[i][1] = automata[i][1] / 8;
+//    automata[i][2] = automata[i][2] * 2;
+//    automata[i][1] = automata[i][1] / 8;
 //    automata[i][0] = automata[i][0] / 2;
 
     // Green dominant (twinkle)
@@ -158,8 +158,8 @@ void loop() {
 //    automata[i][2] = automata[i][2] / 2;
 
     // Red dominant (martian fruitcake)
-//    automata[i][2] = automata[i][2] / 8;
-//    automata[i][0] = automata[i][0] / 2;
+    automata[i][2] = automata[i][2] / 8;
+    automata[i][0] = automata[i][0] / 4;
   }
   
   // Paint this generation
@@ -170,8 +170,8 @@ void loop() {
   for (int i = 0; i < NUM_LEDS; i++) {
 
     // Blue dominant (shimmer)
-    automata[i][2] = automata[i][2] / 2;
-    automata[i][1] = automata[i][1] * 8;
+//    automata[i][2] = automata[i][2] / 2;
+//    automata[i][1] = automata[i][1] * 8;
 //    automata[i][0] = automata[i][0] * 2;
 
     // Green dominant (twinkle)
@@ -179,7 +179,7 @@ void loop() {
 //    automata[i][2] = automata[i][2] * 2;
 
     // Red dominant (martian fruitcake
-//    automata[i][2] = automata[i][2] * 8;
-//    automata[i][0] = automata[i][0] * 2;
+    automata[i][2] = automata[i][2] * 8;
+    automata[i][0] = automata[i][0] * 2;
   }
 }
