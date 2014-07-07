@@ -313,7 +313,7 @@ void automata() {
 /* 
 ==========================================
 = push_frame(uint16_t wait, uint16_t steps)
-=   * wait is the number of milliseconds to wait between steps
+=   * wait is the number of microseconds to wait between steps
 =   * steps is how many divisions of colorspace to cycle through
 = 
 = Pushes the frame buffer to the LED strip
