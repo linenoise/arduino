@@ -3,7 +3,7 @@
  numbers_machine
  
  A blinking lights demo for arduino
- Updated by Dann Stayskal
+ Updated by Danne Stayskal
  
  Library originally added 18 Apr 2008
  by David A. Mellis

@@ -6,12 +6,12 @@
 || #
 ||
 || @changelog
-|| | 1.0 2014-06-24 - Dann Stayskal : Initial Release
+|| | 1.0 2014-06-24 - Danne Stayskal : Initial Release
 || #
 ||
-|| @author	Dann Stayskal
-|| @contact	dann@stayskal.com
-|| @support     http://dann.stayskal.com/
+|| @author	Danne Stayskal
+|| @contact	danne@stayskal.com
+|| @support     http://danne.stayskal.com/
 || @license     MIT License
 */
 

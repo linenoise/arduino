@@ -2,16 +2,17 @@
 || @file 	playa_bike.ino
 || @version	1.0
 || @description
-|| | This runs the LED strip lighting effects on Dann's 2014 Burning Man playa bike.
+|| | This runs the LED strip on Danne's playa bike.
 || #
 ||
 || @changelog
-|| | 1.0 2014-06-24 - Dann Stayskal : Initial Release
+|| | 1.0 2014-06-24 - Danne Stayskal : Initial Release
+|| | 1.1 2014-08-18 - Final build installed on bike
 || #
 ||
-|| @author	Dann Stayskal
-|| @contact	dann@stayskal.com
-|| @support     http://dann.stayskal.com/
+|| @author	Danne Stayskal
+|| @contact	danne@stayskal.com
+|| @support     http://danne.stayskal.com/
 || @license     MIT License
 */
 
@@ -20,26 +21,13 @@
 =  LIBRARIES
 */
 
-// Profiling
-#include <MemoryFree.h>
-
-// LCD Monitor
-#include <LiquidCrystal.h>
-
 // LED Strip
-#include "LPD8806.h"
-#include "SPI.h"
-#define NUM_LEDS 188
+#include "FastLED.h"        // https://github.com/FastLED/FastLED
+#define NUM_LEDS 180
 #define NUM_CHANNELS 3
-#define DATA_PIN 11
-#define CLOCK_PIN 13
+#define DATA_PIN 13
 #define MAX_BRIGHTNESS 255
 
-// Heartbeat LED
-#define HEARTBEAT_PIN 8
-
-// Brightness knob
-#define BRIGHTNESS_KNOB_PIN 2
 
 // Contouring
 // ----------
@@ -57,11 +45,8 @@
 =  INITIALIZERS
 */
 
-// LCD Monitor
-LiquidCrystal lcd(12, 10, 5, 4, 3, 2);
-
 // LED Strip
-LPD8806 strip = LPD8806(NUM_LEDS, DATA_PIN, CLOCK_PIN);
+CRGB leds[NUM_LEDS];
 
 // One-dimensional cellular automata rules (0..255, inclusive)
 uint8_t rules[NUM_CHANNELS] = {124, 110, 110};
@@ -73,8 +58,6 @@ uint8_t generation[NUM_LEDS][NUM_CHANNELS];
 // Heartbeat LED
 uint8_t pulse;
 
-// Brightness knob
-int brightness;
 
 // Channel phase map
 // -----------------
@@ -110,13 +93,10 @@ int8_t channel_phase_velocity[NUM_CHANNELS];
 */
 
 void automata();
-void heartbeat();
 void contour_frame();
 void push_frame(uint16_t wait, uint16_t steps);
 void revert_frame();
-void read_brightness();
 void step_phase_vectors();
-void state(char* message);
 
 
 /* 
@@ -126,18 +106,9 @@ void state(char* message);
 = Initializes variables and drivers, called once by Arduino during startup.
 */
 void setup() {
-
-  // Start the LCD Monitor
-  lcd.begin(16, 3);
   
   // Start the LED strip
-  strip.begin();
-  strip.show();
-
-  // Start the heartbeat LED
-  pulse = HIGH;
-  pinMode(HEARTBEAT_PIN, OUTPUT);
-  digitalWrite(HEARTBEAT_PIN, pulse);
+  FastLED.addLeds<WS2811, DATA_PIN, RGB>(leds, NUM_LEDS);
 
   // Channel phase vectors
   // -------------------------
@@ -181,36 +152,16 @@ void setup() {
 = The main heartbeat, called by Arduino when previous run of loop() completes.
 */
 void loop() {
-  heartbeat();
-  read_brightness();
-
   // Run the cellular automata rules
   automata();
   
   // Contour, push, and revert the frame
   contour_frame();
-  push_frame(10,20);
+  push_frame(60,10);
   revert_frame();
 
   // Step phase vectors according to their respective velocities
   step_phase_vectors();
-
-  state("Automata");
-}
-
-
-/* 
-==========================================
-= read_brightness()
-=
-= Reads brightness level from potentiometer attached to an analog input
-*/
-void read_brightness() {
-  brightness = analogRead(BRIGHTNESS_KNOB_PIN);
-  brightness = int(brightness / 4);
-  if (brightness < 5) {
-    brightness = MAX_BRIGHTNESS;
-  }
 }
 
 
@@ -362,24 +313,8 @@ void automata() {
 
 /* 
 ==========================================
-= heartbeat()
-=
-= Pulses the heartbeat LED
-*/
-void heartbeat() {
-  digitalWrite(HEARTBEAT_PIN,pulse);
-  if (pulse == LOW) {
-    pulse = HIGH;
-  } else {
-    pulse = LOW; 
-  }
-}
-
-
-/* 
-==========================================
 = push_frame(uint16_t wait, uint16_t steps)
-=   * wait is the number of seconds to wait between steps
+=   * wait is the number of microseconds to wait between steps
 =   * steps is how many divisions of colorspace to cycle through
 = 
 = Pushes the frame buffer to the LED strip
@@ -390,14 +325,11 @@ void push_frame(uint16_t wait, uint16_t steps) {
   steps *= 10;
 
   for (uint8_t step = 1; step <= steps; step +=10) {
-    for (uint8_t i = 0; i < strip.numPixels(); i++) {
+    for (uint8_t i = 0; i < NUM_LEDS; i++) {
       for (uint8_t c = 0; c < NUM_CHANNELS; c++) {
 
         // Linear cross-fade
         step_values[c] = ((step * neighborhood[i][c])/steps) + (((steps - step ) * generation[i][c])/steps);
-
-        // Scale brightness according to the knob
-        step_values[c] = (step_values[c] * brightness) / MAX_BRIGHTNESS;
 
         // Clip values greater than MAX_BRIGHTNESS
         if (step_values[c] > MAX_BRIGHTNESS) {
@@ -405,36 +337,10 @@ void push_frame(uint16_t wait, uint16_t steps) {
         }
 
       }
-      strip.setPixelColor(i, strip.Color(step_values[0],step_values[1],step_values[2]) );
+
+      leds[i] = CRGB(step_values[0],step_values[1],step_values[2]);
     }
-    strip.show();
+    FastLED.show();
     delay(wait);
   }
-}
-
-
-/* 
-==========================================
-= state(char* message)
-= 
-= Prints a status message to the LCD panel followed by memory metrics
-*/
-void state(char* message) {
-
-  // Clear the display
-  char* empty = "                ";
-  lcd.setCursor(0, 0);
-  lcd.print(empty);
-  lcd.setCursor(0, 1);
-  lcd.print(empty);
-
-  // Display the message
-  lcd.setCursor(0, 0);
-  lcd.print(message);
-  
-  // Display memory metrics
-  lcd.setCursor(0, 1);
-  uint16_t free_memory = freeMemory();
-  lcd.print(free_memory);
-  lcd.print("B mem free");
 }

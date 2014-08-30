@@ -6,12 +6,12 @@
 || #
 ||
 || @changelog
-|| | 1.0 2014-07-14 - Dann Stayskal : Initial Release
+|| | 1.0 2014-07-14 - Danne Stayskal : Initial Release
 || #
 ||
-|| @author	Dann Stayskal
-|| @contact	dann@stayskal.com
-|| @support     http://dann.stayskal.com/
+|| @author	Danne Stayskal
+|| @contact	danne@stayskal.com
+|| @support     http://danne.stayskal.com/
 || @license     MIT License
 */
 
@@ -21,6 +21,7 @@
 */
 #include <FastSPI_LED.h>
 #define NUM_LEDS 34
+#define NUM_LEDS 160
 #define NUM_CHANNELS 3
 #define DATA_PIN 13
 #define CLOCK_PIN 11
@@ -340,6 +341,7 @@ void push_frame(uint16_t wait, uint16_t steps) {
       leds[i].r = step_values[0];
       leds[i].g = step_values[1];
       leds[i].b = step_values[2];
+//      leds[i] = CRGB(step_values[0],step_values[1],step_values[2]);
     }
 
     FastSPI_LED.show();
