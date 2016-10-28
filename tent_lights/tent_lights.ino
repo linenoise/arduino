@@ -2,7 +2,7 @@
 || @file 	tent_lights.ino
 || @version	1.0
 || @description
-|| | This runs the LED strip on Dann's tent lights (a fork of playa_bike.ino for ws2811).
+|| | This runs the LED strip on Danne's tent lights (a fork of playa_bike.ino for ws2811).
 || #
 ||
 || @changelog

@@ -2,7 +2,7 @@
 || @file 	tent_lights.ino
 || @version	1.0
 || @description
-|| | This runs the LED strip on Dann's guitar's LED driver
+|| | This runs the LED strip on Danne's guitar's LED driver
 || #
 ||
 || @changelog
