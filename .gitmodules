@@ -1,6 +1,6 @@
 [submodule "libraries/FastFader"]
 	path = libraries/FastFader
-	url = https://github.com/danndalf/FastFader.git
+	url = https://github.com/linenoise/FastFader.git
 [submodule "libraries/FastLED"]
 	path = libraries/FastLED
 	url = https://github.com/FastLED/FastLED.git
