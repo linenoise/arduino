@@ -38,11 +38,10 @@
 #include <math.h>
 
 // How many LEDs are in the strip
-#define NUM_LEDS 18
+#define NUM_LEDS 200
 
-// Using the Arduino Uno in dev mode
-#define DATA_PIN 2
-#define CLOCK_PIN 3
+// Using the Arduino Uno
+#define DATA_PIN 13
 
 // Create the LED interface, pixel buffer, and fader
 CRGB leds[NUM_LEDS];
@@ -70,7 +69,7 @@ int block_length[3] = {
 */
 void setup() {
   // Initialize the LED interface
-  FastLED.addLeds<LPD8806, DATA_PIN, CLOCK_PIN, RGB>(leds, NUM_LEDS);
+  FastLED.addLeds<WS2811, DATA_PIN, RGB>(leds, NUM_LEDS);
 
   // Bind the pixel fader to the LED interface
   pixel_fader.bind(pixel_buffer, leds, NUM_LEDS, FastLED);
@@ -114,6 +113,6 @@ void loop() {
   }
 
   // Push this frame to the LEDs
-  pixel_fader.push(150);
+  pixel_fader.push(50);
 
 }

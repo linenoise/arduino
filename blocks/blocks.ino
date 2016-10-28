@@ -37,11 +37,11 @@
 #include "FastFader.h"  // https://github.com/linenoise/fastfader
 
 // How many LEDs are in the strip
-#define NUM_LEDS 18
+#define NUM_LEDS 256
 
 // Using the Arduino Uno in dev mode
-#define DATA_PIN 2
-#define CLOCK_PIN 3
+#define DATA_PIN 4
+#define CLOCK_PIN 5
 
 // Create the LED interface, pixel buffer, and fader
 CRGB leds[NUM_LEDS];
@@ -69,7 +69,7 @@ int block_length[3] = {
 */
 void setup() {
   // Initialize the LED interface
-  FastLED.addLeds<LPD8806, DATA_PIN, CLOCK_PIN, RGB>(leds, NUM_LEDS);
+  FastLED.addLeds<WS2801, DATA_PIN, CLOCK_PIN, RGB>(leds, NUM_LEDS);
 
   // Bind the pixel fader to the LED interface
   pixel_fader.bind(pixel_buffer, leds, NUM_LEDS, FastLED);

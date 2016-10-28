@@ -38,11 +38,10 @@
 #include <math.h>
 
 // How many LEDs are in the strip
-#define NUM_LEDS 18
+#define NUM_LEDS 100
 
 // Using the Arduino Uno in dev mode
-#define DATA_PIN 2
-#define CLOCK_PIN 3
+#define DATA_PIN 5
 
 // Create the LED interface, pixel buffer, and fader
 CRGB leds[NUM_LEDS];
@@ -65,7 +64,7 @@ void show_automaton(int automaton[NUM_LEDS]);
 */
 void setup() {
   // Initialize the LED interface
-  FastLED.addLeds<LPD8806, DATA_PIN, CLOCK_PIN, RGB>(leds, NUM_LEDS);
+    FastLED.addLeds<NEOPIXEL, DATA_PIN, RGB>(leds, NUM_LEDS);
 
   // Bind the pixel fader to the LED interface
   pixel_fader.bind(pixel_buffer, leds, NUM_LEDS, FastLED);

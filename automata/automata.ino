@@ -37,11 +37,10 @@
 #include "FastFader.h"  // https://github.com/linenoise/fastfader
 
 // How many LEDs are in the strip
-#define NUM_LEDS 18
+#define NUM_LEDS 50
 
 // Using the Arduino Uno in dev mode
-#define DATA_PIN 2
-#define CLOCK_PIN 3
+#define DATA_PIN 5
 
 // Create the LED interface, pixel buffer, and fader
 CRGB leds[NUM_LEDS];
@@ -61,7 +60,7 @@ int automata[NUM_LEDS][3];
 */
 void setup() {
   // Initialize the LED interface
-  FastLED.addLeds<LPD8806, DATA_PIN, CLOCK_PIN, RGB>(leds, NUM_LEDS);
+  FastLED.addLeds<NEOPIXEL, DATA_PIN, RGB>(leds, NUM_LEDS);
 
   // Bind the pixel fader to the LED interface
   pixel_fader.bind(pixel_buffer, leds, NUM_LEDS, FastLED);
@@ -148,15 +147,6 @@ void loop() {
       automata[i][c] = next_generation[i][c]; 
     }
 
-    // Blue dominant (shimmer)
-//    automata[i][2] = automata[i][2] * 2;
-//    automata[i][1] = automata[i][1] / 8;
-//    automata[i][0] = automata[i][0] / 2;
-
-    // Green dominant (twinkle)
-//    automata[i][1] = automata[i][1] / 8;
-//    automata[i][2] = automata[i][2] / 2;
-
     // Red dominant (martian fruitcake)
     automata[i][2] = automata[i][2] / 8;
     automata[i][0] = automata[i][0] / 4;
@@ -168,17 +158,6 @@ void loop() {
 
   // Bring red back so it doesn't die off
   for (int i = 0; i < NUM_LEDS; i++) {
-
-    // Blue dominant (shimmer)
-//    automata[i][2] = automata[i][2] / 2;
-//    automata[i][1] = automata[i][1] * 8;
-//    automata[i][0] = automata[i][0] * 2;
-
-    // Green dominant (twinkle)
-//    automata[i][1] = automata[i][1] * 8;
-//    automata[i][2] = automata[i][2] * 2;
-
-    // Red dominant (martian fruitcake
     automata[i][2] = automata[i][2] * 8;
     automata[i][0] = automata[i][0] * 2;
   }
