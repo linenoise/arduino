@@ -2,7 +2,7 @@
 || @file 	critical_hat.ino
 || @version	1.0
 || @description
-|| | This runs the LED strip on the hat Dann brought to Critical Northwest 2014
+|| | This runs the LED strip on the hat Danne brought to Critical Northwest 2014
 || #
 ||
 || @changelog
